@@ -94,9 +94,29 @@ const RootQueryType = new GraphQLObjectType({
     })
 })
 
+/* Now with some mutation of the data! */
+const RootMutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    description: 'Root Mutation',
+    fields: {
+        addModel: {
+            type: ModelType,
+            args: {
+                name: {type: GraphQLString},
+                makeId: {type: GraphQLInt}
+            },
+            resolve: (parent, args) => {
+                const newModel = {id: model.length +1, name: args.name, makeId: args.makeId}
+                model.push(newModel)
+                return newModel
+            }   
+        }
+    }
+})
 
 const schema = new GraphQLSchema({
     query: RootQueryType,
+    mutation: RootMutationType
 })
 
 
